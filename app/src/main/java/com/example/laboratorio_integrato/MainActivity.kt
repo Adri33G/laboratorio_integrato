@@ -84,6 +84,11 @@ class MainActivity : AppCompatActivity() {
             numbersSum[2] = numbersSum[2] % 10
         }
         Log.d("AllVet", "[" + numbersSum[0] + "," + numbersSum[1] + "," + numbersSum[2] + "]" )
+
+        Log.d("AllVet1", "[" + numbersSum[1] + "," + numbersSum[2] + "," + numbersSum[0] + "]" )
+
+        Log.d("AllVet2", "[" + numbersSum[2] + "," + numbersSum[0] + "," + numbersSum[1] + "]" )
+        
     }
     fun cicleLetters(singleLetter:Char): Int{
         var numberSum = 0;
