@@ -14,11 +14,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var surname: EditText
     private lateinit var hometown: EditText
     private lateinit var button: Button
+    private var firsLetter = 0
+    private var lastLetter = 0
+    private var letters = arrayOf("kqwyx", "huv", "ers", "mt", "lo", "ag", "ijn", "cf", "dz", "pb");
+    private var numbers = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    fun selector(questionText: List<String>): Int{
-        var letters = arrayOf("kqwyx", "huv", "ers", "mt", "lo", "ag", "ijn", "cf", "dz", "pb");
-        var numbers = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-        var numbersSum = 0;
+    fun selector(questionText: List<String>,name: String, surname: String, hometown:String){
+        var numberSum = 0;
+        var numbersSum = IntArray(3);
+        var nameSum = 0
+        var surnameSum = 0
+        var hometownSum = 0
 
         for (i in 0..questionText.size-1)
         {
@@ -30,9 +36,17 @@ class MainActivity : AppCompatActivity() {
                 do{
                     Log.d("vet", letters[j].get(k).toString());
                     if(letters[j].get(k).toString() == singleLetter.toString()){
-                        numbersSum += numbers[j];
+                        numberSum += numbers[j];
                         Log.d("numbers", numbers[j].toString());
-                        finded = true
+                        finded = true;
+                        if(i==0){
+                            firsLetter = numbers[j]
+                            Log.d("first", firsLetter.toString())
+                        }
+                        if(i == questionText.size-1){
+                            lastLetter = numbers[j]
+                            Log.d("last", lastLetter.toString())
+                        }
                     }
                     else{
                         k++;
@@ -41,11 +55,59 @@ class MainActivity : AppCompatActivity() {
                 j++;
             }while(j<letters.size && !finded);
         }
-        if (numbersSum >= 10){
-            numbersSum = numbersSum % 10;
+        if (numberSum >= 10){
+            numberSum = numberSum % 10;
         }
-        return numbersSum;
+        numbersSum[0] = numberSum
+        //numbersSum[0] = numberSum
+        var singleLetter= name.first();
+        nameSum = cicleLetters(singleLetter);
+        Log.d("nameSum", nameSum.toString())
 
+        singleLetter= surname.first();
+        surnameSum = cicleLetters(singleLetter);
+        Log.d("surnameSum", surnameSum.toString())
+
+        singleLetter= hometown.first();
+        hometownSum = cicleLetters(singleLetter);
+        Log.d("hometownSum", hometownSum.toString())
+
+        numbersSum[1] = nameSum+surnameSum+hometownSum+lastLetter
+
+        if(numbersSum[1] >= 10){
+            numbersSum[1] = numbersSum[1] % 10
+        }
+
+        numbersSum[2] = nameSum+surnameSum+firsLetter+lastLetter
+
+        if(numbersSum[2] >= 10){
+            numbersSum[2] = numbersSum[2] % 10
+        }
+        Log.d("AllVet", "[" + numbersSum[0] + "," + numbersSum[1] + "," + numbersSum[2] + "]" )
+    }
+    fun cicleLetters(singleLetter:Char): Int{
+        var numberSum = 0;
+        var j = 0;
+        do {
+            var k = 0;
+            var finded = false;
+            do{
+                Log.d("vet", letters[j].get(k).toString());
+                if(letters[j].get(k).toString() == singleLetter.toString()){
+                    numberSum += numbers[j];
+                    Log.d("numbers", numbers[j].toString());
+                    finded = true;
+                }
+                else{
+                    k++;
+                }
+            }while(k < letters[j].length && !finded);
+            j++;
+        }while(j<letters.size && !finded);
+        if (numberSum >= 10){
+            numberSum = numberSum % 10;
+        }
+        return numberSum
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,11 +120,11 @@ class MainActivity : AppCompatActivity() {
         surname = findViewById(R.id.surname)
         hometown = findViewById(R.id.hometown)
         button = findViewById(R.id.button)
-        var numberSum = 0;
+        var numberSum = arrayOf<Int>();
 
         button.setOnClickListener {
             var questionText = question.text.toString().split(" ")
-            numberSum = selector(questionText);
+            selector(questionText,name.text.toString(),surname.text.toString(),hometown.text.toString());
 
             Log.d("ciao", numberSum.toString());
         }
