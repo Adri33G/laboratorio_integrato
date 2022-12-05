@@ -15,47 +15,56 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hometown: EditText
     private lateinit var button: Button
 
+    fun selector(questionText: List<String>): Int{
+        var letters = arrayOf("kqwyx", "huv", "ers", "mt", "lo", "ag", "ijn", "cf", "dz", "pb");
+        var numbers = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        var numbersSum = 0;
+
+        for (i in 0..questionText.size-1)
+        {
+            var singleLetter= questionText[i].first();
+            var j = 0;
+            do {
+                var k = 0;
+                var finded = false;
+                do{
+                    Log.d("vet", letters[j].get(k).toString());
+                    if(letters[j].get(k).toString() == singleLetter.toString()){
+                        numbersSum += numbers[j];
+                        Log.d("numbers", numbers[j].toString());
+                        finded = true
+                    }
+                    else{
+                        k++;
+                    }
+                }while(k < letters[j].length && !finded);
+                j++;
+            }while(j<letters.size && !finded);
+        }
+        if (numbersSum >= 10){
+            numbersSum = numbersSum % 10;
+        }
+        return numbersSum;
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var letters = arrayOf("kqwyx", "huv", "ers", "mt", "lo", "ag", "ijn", "cf", "dz", "pb");
-        var numbers = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-        var numbersSum = 0;
 
         question = findViewById(R.id.question)
         name = findViewById(R.id.name)
         surname = findViewById(R.id.surname)
         hometown = findViewById(R.id.hometown)
         button = findViewById(R.id.button)
+        var numberSum = 0;
 
         button.setOnClickListener {
             var questionText = question.text.toString().split(" ")
+            numberSum = selector(questionText);
 
-
-            for (i in 0..questionText.size-1) {
-                var singleLetter= questionText[i].first();
-                var j = 0;
-                do {
-                    var k = 0;
-                    var finded = false;
-                    do{
-                        Log.d("vet", letters[j].get(k).toString());
-                        if(letters[j].get(k).toString() == singleLetter.toString()){
-                            numbersSum += numbers[j];
-                            Log.d("numbers", numbers[j].toString());
-                            finded = true
-                        }
-                        else{
-                            k++;
-                        }
-                    }while(k < letters[j].length && !finded);
-                    j++;
-                }while(j<letters.size && !finded);
-            }
-            Log.d("ciao", numbersSum.toString());
-
+            Log.d("ciao", numberSum.toString());
         }
     }
 }
