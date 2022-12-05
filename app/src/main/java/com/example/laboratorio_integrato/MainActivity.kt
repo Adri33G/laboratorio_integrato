@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         var letters = arrayOf("kqwyx", "huv", "ers", "mt", "lo", "ag", "ijn", "cf", "dz", "pb");
         var numbers = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-        var numbersSum = arrayOf<Int>();
+        var numbersSum = 0;
 
         question = findViewById(R.id.question)
         name = findViewById(R.id.name)
@@ -41,8 +41,10 @@ class MainActivity : AppCompatActivity() {
                     var k = 0;
                     var finded = false;
                     do{
-                        if(letters[j].take(k) == singleLetter.toString()){
+                        Log.d("vet", letters[j].get(k).toString());
+                        if(letters[j].get(k).toString() == singleLetter.toString()){
                             numbersSum += numbers[j];
+                            Log.d("numbers", numbers[j].toString());
                             finded = true
                         }
                         else{
@@ -50,9 +52,9 @@ class MainActivity : AppCompatActivity() {
                         }
                     }while(k < letters[j].length && !finded);
                     j++;
-                }while(!finded);
-                //Log.d("vet", questionText[i].first().toString()
+                }while(j<letters.size && !finded);
             }
+            Log.d("ciao", numbersSum.toString());
 
         }
     }
