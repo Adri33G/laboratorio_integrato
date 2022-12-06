@@ -3,8 +3,10 @@ package com.example.laboratorio_integrato
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
@@ -14,12 +16,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var surname: EditText
     private lateinit var hometown: EditText
     private lateinit var button: Button
+    private lateinit var tripleView: TextView
     private var firsLetter = 0
     private var lastLetter = 0
     private var letters = arrayOf("kqwyx", "huv", "ers", "mt", "lo", "ag", "ijn", "cf", "dz", "pb");
     private var numbers = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    fun selector(questionText: List<String>,name: String, surname: String, hometown:String){
+    fun selector(questionText: List<String>,name: String, surname: String, hometown:String): IntArray{
         var numberSum = 0;
         var numbersSum = IntArray(3);
         var nameSum = 0
@@ -83,12 +86,14 @@ class MainActivity : AppCompatActivity() {
         if(numbersSum[2] >= 10){
             numbersSum[2] = numbersSum[2] % 10
         }
-        Log.d("AllVet", "[" + numbersSum[0] + "," + numbersSum[1] + "," + numbersSum[2] + "]" )
 
-        Log.d("AllVet1", "[" + numbersSum[1] + "," + numbersSum[2] + "," + numbersSum[0] + "]" )
+        return numbersSum;
 
-        Log.d("AllVet2", "[" + numbersSum[2] + "," + numbersSum[0] + "," + numbersSum[1] + "]" )
-        
+//        Log.d("AllVet", "[" + numbersSum[0] + "," + numbersSum[1] + "," + numbersSum[2] + "]" )
+//
+//        Log.d("AllVet1", "[" + numbersSum[1] + "," + numbersSum[2] + "," + numbersSum[0] + "]" )
+//
+//        Log.d("AllVet2", "[" + numbersSum[2] + "," + numbersSum[0] + "," + numbersSum[1] + "]" )
     }
     fun cicleLetters(singleLetter:Char): Int{
         var numberSum = 0;
@@ -125,13 +130,17 @@ class MainActivity : AppCompatActivity() {
         surname = findViewById(R.id.surname)
         hometown = findViewById(R.id.hometown)
         button = findViewById(R.id.button)
-        var numberSum = arrayOf<Int>();
+        tripleView = findViewById(R.id.tripleView)
+
 
         button.setOnClickListener {
             var questionText = question.text.toString().split(" ")
-            selector(questionText,name.text.toString(),surname.text.toString(),hometown.text.toString());
+            var numbersSum = selector(questionText,name.text.toString(),surname.text.toString(),hometown.text.toString());
 
-            Log.d("ciao", numberSum.toString());
+            tripleView.text = "[" + numbersSum[0].toString() + "," + numbersSum[1].toString() + "," + numbersSum[2].toString() + "]" + "\n" +
+                              "[" + numbersSum[1].toString() + "," + numbersSum[2].toString() + "," + numbersSum[0].toString() + "]" + "\n" +
+                              "[" + numbersSum[2].toString() + "," + numbersSum[0].toString() + "," + numbersSum[1].toString() + "]";
+            Log.d("ciao", numbersSum.toString());
         }
     }
 }
