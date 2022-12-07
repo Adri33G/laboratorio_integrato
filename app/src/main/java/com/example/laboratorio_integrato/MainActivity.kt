@@ -1,5 +1,6 @@
 package com.example.laboratorio_integrato
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
+import org.json.JSONObject
+import org.json.JSONTokener
+import java.util.Objects
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
@@ -120,6 +129,7 @@ class MainActivity : AppCompatActivity() {
         return numberSum
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -141,9 +151,50 @@ class MainActivity : AppCompatActivity() {
                               "[" + numbersSum[1].toString() + "," + numbersSum[2].toString() + "," + numbersSum[0].toString() + "]" + "\n" +
                               "[" + numbersSum[2].toString() + "," + numbersSum[0].toString() + "," + numbersSum[1].toString() + "]";
             Log.d("ciao", numbersSum.toString());
+
+            val gson = GsonBuilder().create()
+            var jsonString = assets.open("database.json").bufferedReader().use { it.readText()
+            }
+            val sType = object : TypeToken<List<Sibilla>> (){}.type
+            val otherList: List<Sibilla> = gson.fromJson(jsonString, sType)
+
+            Log.d("json", "${otherList[0].id}")
+
+            positionTaker(numbersSum, otherList)
+
         }
+
+
+
     }
 }
+
+fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>){
+
+           var j = 0;
+            do{
+                if(otherList[j].pos_tripla == "1"){
+                    if(otherList[j].pos1 == numberSum[0].toString()
+                        && otherList[j].pos2 == numberSum[1].toString()
+                        && otherList[j].pos3 == numberSum[2].toString()){
+                        Log.d("result", otherList[j].stringa1 + otherList[j].stringa2)
+                    }
+                }
+                j++;
+            }while(j<otherList.size);
+}
+
+data class Sibilla(
+    var id: String? = null,
+    var pos1: String? = null,
+    var pos2: String? = null,
+    var pos3: String? = null,
+    var pos_tripla: String? = null,
+    var stringa1: String? = null,
+    var stringa2: String? = null,
+
+
+    )
 
 //Sarò fortunato in amore nel 2023? Federico Gervasi Rovereto
 //1. si prendono le prime iniziali di tutta la domanda compresi nome cognome e luogo
