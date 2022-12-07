@@ -174,11 +174,16 @@ class MainActivity : AppCompatActivity() {
 fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>){
 
            var j = 0;
+            var firstRow: String = "";
+            var secondRow: String = "";
+            var thirdRow: String = "";
+            var response: String? = "";
             do{
                 if(otherList[j].pos_tripla == "1"){
                     if(otherList[j].pos1 == numberSum[0].toString()
                         && otherList[j].pos2 == numberSum[1].toString()
                         && otherList[j].pos3 == numberSum[2].toString()){
+                        firstRow = otherList[j].stringa1 + otherList[j].stringa2;
                         Log.d("result1", otherList[j].stringa1 + otherList[j].stringa2)
                     }
                 }
@@ -187,7 +192,11 @@ fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>){
                     if(otherList[j].pos1 == numberSum[1].toString()
                         && otherList[j].pos2 == numberSum[2].toString()
                         && otherList[j].pos3 == numberSum[0].toString()){
+                        secondRow = otherList[j].stringa1 + otherList[j].stringa2;
+
                         Log.d("result2", otherList[j].stringa1 + otherList[j].stringa2)
+
+
                     }
                 }
 
@@ -195,11 +204,16 @@ fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>){
                     if(otherList[j].pos1 == numberSum[2].toString()
                         && otherList[j].pos2 == numberSum[0].toString()
                         && otherList[j].pos3 == numberSum[1].toString()){
+                        thirdRow = otherList[j].stringa1 + otherList[j].stringa2;
+
                         Log.d("result3", otherList[j].stringa1 + otherList[j].stringa2)
                     }
                 }
 
+                response = firstRow + secondRow +thirdRow;
+                Log.d("Response", response)
                 j++;
+
             }while(j<otherList.size);
 }
 
