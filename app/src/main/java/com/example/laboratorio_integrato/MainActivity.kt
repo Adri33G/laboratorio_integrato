@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hometown: EditText
     private lateinit var button: Button
     private lateinit var tripleView: TextView
+    private lateinit var resultView: TextView
     private var firsLetter = 0
     private var lastLetter = 0
     private var letters = arrayOf("kqwyx", "huv", "ers", "mt", "lo", "ag", "ijn", "cf", "dz", "pb");
@@ -141,6 +142,7 @@ class MainActivity : AppCompatActivity() {
         hometown = findViewById(R.id.hometown)
         button = findViewById(R.id.button)
         tripleView = findViewById(R.id.tripleView)
+        resultView = findViewById(R.id.resultView)
 
 
         button.setOnClickListener {
@@ -177,9 +179,26 @@ fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>){
                     if(otherList[j].pos1 == numberSum[0].toString()
                         && otherList[j].pos2 == numberSum[1].toString()
                         && otherList[j].pos3 == numberSum[2].toString()){
-                        Log.d("result", otherList[j].stringa1 + otherList[j].stringa2)
+                        Log.d("result1", otherList[j].stringa1 + otherList[j].stringa2)
                     }
                 }
+
+                if(otherList[j].pos_tripla == "2"){
+                    if(otherList[j].pos1 == numberSum[1].toString()
+                        && otherList[j].pos2 == numberSum[2].toString()
+                        && otherList[j].pos3 == numberSum[0].toString()){
+                        Log.d("result2", otherList[j].stringa1 + otherList[j].stringa2)
+                    }
+                }
+
+                if(otherList[j].pos_tripla == "3"){
+                    if(otherList[j].pos1 == numberSum[2].toString()
+                        && otherList[j].pos2 == numberSum[0].toString()
+                        && otherList[j].pos3 == numberSum[1].toString()){
+                        Log.d("result3", otherList[j].stringa1 + otherList[j].stringa2)
+                    }
+                }
+
                 j++;
             }while(j<otherList.size);
 }
