@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
             Log.d("json", "${otherList[0].id}")
 
-            positionTaker(numbersSum, otherList)
+            resultView.text = positionTaker(numbersSum, otherList);
 
         }
 
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>){
+fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>): String{
 
            var j = 0;
             var firstRow: String = "";
@@ -215,6 +215,7 @@ fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>){
                 j++;
 
             }while(j<otherList.size);
+    return response.toString();
 }
 
 data class Sibilla(
