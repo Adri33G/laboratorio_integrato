@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.Expose
@@ -146,28 +147,43 @@ class MainActivity : AppCompatActivity() {
 
 
         button.setOnClickListener {
-            var questionText = question.text.toString().split(" ")
-            var numbersSum = selector(questionText,name.text.toString(),surname.text.toString(),hometown.text.toString());
+            if (question.text.isNotEmpty() &&
+                name.text.isNotEmpty() &&
+                surname.text.isNotEmpty() &&
+                hometown.text.isNotEmpty()
+            ) {
+                var questionText = question.text.toString().split(" ")
+                var numbersSum = selector(
+                    questionText,
+                    name.text.toString(),
+                    surname.text.toString(),
+                    hometown.text.toString()
+                );
 
-            tripleView.text = "[" + numbersSum[0].toString() + "," + numbersSum[1].toString() + "," + numbersSum[2].toString() + "]" + "\n" +
-                              "[" + numbersSum[1].toString() + "," + numbersSum[2].toString() + "," + numbersSum[0].toString() + "]" + "\n" +
-                              "[" + numbersSum[2].toString() + "," + numbersSum[0].toString() + "," + numbersSum[1].toString() + "]";
-            Log.d("ciao", numbersSum.toString());
+                tripleView.text =
+                    "[" + numbersSum[0].toString() + "," + numbersSum[1].toString() + "," + numbersSum[2].toString() + "]" + "\n" +
+                            "[" + numbersSum[1].toString() + "," + numbersSum[2].toString() + "," + numbersSum[0].toString() + "]" + "\n" +
+                            "[" + numbersSum[2].toString() + "," + numbersSum[0].toString() + "," + numbersSum[1].toString() + "]";
+                Log.d("ciao", numbersSum.toString());
 
-            val gson = GsonBuilder().create()
-            var jsonString = assets.open("database.json").bufferedReader().use { it.readText()
+                val gson = GsonBuilder().create()
+                var jsonString = assets.open("database.json").bufferedReader().use {
+                    it.readText()
+                }
+                val sType = object : TypeToken<List<Sibilla>>() {}.type
+                val otherList: List<Sibilla> = gson.fromJson(jsonString, sType)
+
+                Log.d("json", "${otherList[0].id}")
+
+                positionTaker(numbersSum, otherList)
+                resultView.text = positionTaker(numbersSum, otherList);
+
+            } else {
+                Toast.makeText(this, "Fill in all fields", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
             }
-            val sType = object : TypeToken<List<Sibilla>> (){}.type
-            val otherList: List<Sibilla> = gson.fromJson(jsonString, sType)
-
-            Log.d("json", "${otherList[0].id}")
-
-            positionTaker(numbersSum, otherList)
-            resultView.text = positionTaker(numbersSum, otherList);
 
         }
-
-
 
     }
 }
