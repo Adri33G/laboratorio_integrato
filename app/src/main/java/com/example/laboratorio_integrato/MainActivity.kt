@@ -175,17 +175,21 @@ class MainActivity : AppCompatActivity() {
 fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>): String{
 
            var j = 0;
-            var firstRow: String = "";
-            var secondRow: String = "";
-            var thirdRow: String = "";
+            var firstRow1: String? = "";
+            var firstRow2: String? = "";
+            var secondRow1: String? = "";
+            var secondRow2: String? = "";
+            var thirdRow1: String? = "";
+            var thirdRow2: String? = "";
             var response: String? = "";
             do{
                 if(otherList[j].pos_tripla == "1"){
                     if(otherList[j].pos1 == numberSum[0].toString()
                         && otherList[j].pos2 == numberSum[1].toString()
                         && otherList[j].pos3 == numberSum[2].toString()){
-                        firstRow = otherList[j].stringa1 + otherList[j].stringa2;
-                        Log.d("result1", otherList[j].stringa1 + otherList[j].stringa2)
+                        firstRow1 = otherList[j].stringa1;
+                        firstRow2 = otherList[j].stringa2;
+                        Log.d("result1", firstRow1 +firstRow2)
                     }
                 }
 
@@ -193,9 +197,10 @@ fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>): String{
                     if(otherList[j].pos1 == numberSum[1].toString()
                         && otherList[j].pos2 == numberSum[2].toString()
                         && otherList[j].pos3 == numberSum[0].toString()){
-                        secondRow = otherList[j].stringa1 + otherList[j].stringa2;
+                        secondRow1 = otherList[j].stringa1;
+                        secondRow2 = otherList[j].stringa2;
 
-                        Log.d("result2", otherList[j].stringa1 + otherList[j].stringa2)
+                        Log.d("result2", secondRow1 +secondRow2)
 
 
                     }
@@ -205,13 +210,14 @@ fun positionTaker(numberSum: IntArray, otherList: List<Sibilla>): String{
                     if(otherList[j].pos1 == numberSum[2].toString()
                         && otherList[j].pos2 == numberSum[0].toString()
                         && otherList[j].pos3 == numberSum[1].toString()){
-                        thirdRow = otherList[j].stringa1 + otherList[j].stringa2;
+                        thirdRow1 = otherList[j].stringa1;
+                        thirdRow2 = otherList[j].stringa2;
 
-                        Log.d("result3", otherList[j].stringa1 + otherList[j].stringa2)
+                        Log.d("result3", thirdRow1 +thirdRow2)
                     }
                 }
 
-                response = firstRow + secondRow +thirdRow;
+                response = firstRow1 + secondRow1 + thirdRow1 + firstRow2 + secondRow2 + thirdRow2;
                 Log.d("Response", response)
                 j++;
 
