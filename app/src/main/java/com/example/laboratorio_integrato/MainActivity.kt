@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         for (i in 0..questionText.size-1)
         {
-            var singleLetter= questionText[i].first();
+            var singleLetter= questionText[i].first().lowercase();
             var j = 0;
             do {
                 var k = 0;
@@ -74,15 +74,15 @@ class MainActivity : AppCompatActivity() {
         }
         numbersSum[0] = numberSum
         //numbersSum[0] = numberSum
-        var singleLetter= name.first();
+        var singleLetter= name.first().lowercase();
         nameSum = cicleLetters(singleLetter);
         Log.d("nameSum", nameSum.toString())
 
-        singleLetter= surname.first();
+        singleLetter= surname.first().lowercase();
         surnameSum = cicleLetters(singleLetter);
         Log.d("surnameSum", surnameSum.toString())
 
-        singleLetter= hometown.first();
+        singleLetter= hometown.first().lowercase();
         hometownSum = cicleLetters(singleLetter);
         Log.d("hometownSum", hometownSum.toString())
 
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 //
 //        Log.d("AllVet2", "[" + numbersSum[2] + "," + numbersSum[0] + "," + numbersSum[1] + "]" )
     }
-    fun cicleLetters(singleLetter:Char): Int{
+    fun cicleLetters(singleLetter:String): Int{
         var numberSum = 0;
         var j = 0;
         do {
