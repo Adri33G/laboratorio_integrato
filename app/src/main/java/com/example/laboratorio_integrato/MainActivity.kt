@@ -133,7 +133,6 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
-        val backButton = findViewById<Button>(R.id.backButton)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -182,9 +181,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Fill in all fields", Toast.LENGTH_SHORT).show();
                 return@setOnClickListener
-            }
-            backButton.setOnClickListener {
-                finish()
             }
 
         }

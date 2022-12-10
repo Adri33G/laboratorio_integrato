@@ -27,6 +27,14 @@ class LoginActivity : AppCompatActivity (){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        //actionbar
+        val actionbar = supportActionBar
+        //set actionbar title
+        actionbar!!.title = "New Activity"
+        //set back button
+        actionbar.setDisplayHomeAsUpEnabled(true)
+        actionbar.setDisplayHomeAsUpEnabled(true)
+
         auth = Firebase.auth
         email = findViewById(R.id.email);
         pwd = findViewById(R.id.password);
@@ -54,7 +62,13 @@ class LoginActivity : AppCompatActivity (){
                     pwd.transformationMethod = PasswordTransformationMethod.getInstance()
                     showButton.text = "Show"
                 }
+
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

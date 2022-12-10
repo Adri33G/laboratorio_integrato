@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="85dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:text="Back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <Button-->
+<!--        android:id="@+id/backButton"-->
+<!--        android:layout_width="85dp"-->
+<!--        android:layout_height="41dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:text="Back"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <EditText
         android:id="@+id/question"
