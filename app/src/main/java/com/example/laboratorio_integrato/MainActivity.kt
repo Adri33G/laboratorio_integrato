@@ -136,6 +136,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val actionbar = supportActionBar
+        //set actionbar title
+        actionbar!!.title = "New Activity"
+        //set back button
+        actionbar.setDisplayHomeAsUpEnabled(true)
+        actionbar.setDisplayHomeAsUpEnabled(true)
+
+
 
         question = findViewById(R.id.question)
         name = findViewById(R.id.name)
@@ -186,6 +194,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
 
