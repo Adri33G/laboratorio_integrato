@@ -4,6 +4,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
+
+
+private lateinit var auth: FirebaseAuth
+private lateinit var emailToString: String
+private lateinit var passwordToString: String
+private lateinit var passwordControlToString: String
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -11,7 +19,6 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var password: EditText
     lateinit var passwordControl: EditText
     lateinit var button: Button
-    lateinit var backButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +29,11 @@ class RegisterActivity : AppCompatActivity() {
         password = findViewById(R.id.password)
         passwordControl = findViewById(R.id.passwordControl)
         button = findViewById(R.id.button)
+        emailToString = ""
+        passwordToString =""
+        passwordControlToString = ""
+        //val db = Firebase.firestore
+
 
         val actionbar = supportActionBar
 
@@ -29,6 +41,33 @@ class RegisterActivity : AppCompatActivity() {
 
         actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setDisplayHomeAsUpEnabled(true)
+
+        button.setOnClickListener(){
+            if(email.text.isNotEmpty()
+                || passwordControl.text.isNotEmpty()
+                || password.text.isNotEmpty()){
+
+                emailToString = email.text.toString()
+                passwordToString = password.text.toString()
+                passwordControlToString = passwordControl.text.toString()
+
+                if (passwordToString == passwordControlToString) {
+                    auth.createUserWithEmailAndPassword(emailToString, passwordToString)
+
+                        .addOnCompleteListener(this){
+                            val user = auth.currentUser
+                            val userData = hashMapOf(
+                                "email" to email.text.toString(),
+                                "password" to password.text.toString()
+                            )
+
+                            if(user != null){
+
+                            }
+                        }
+                }
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
