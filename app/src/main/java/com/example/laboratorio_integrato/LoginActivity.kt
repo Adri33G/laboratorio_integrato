@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity (){
             Log.d("password", pwd.text.toString())
             auth.signInWithEmailAndPassword(email.text.toString(), pwd.text.toString())
                 .addOnSuccessListener {
-
+                    Toast.makeText(this, "Accesso", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent);
                     finish();

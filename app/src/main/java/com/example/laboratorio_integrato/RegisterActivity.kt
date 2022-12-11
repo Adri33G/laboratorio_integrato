@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
@@ -24,7 +25,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
+        auth = Firebase.auth
         email = findViewById(R.id.email)
         password = findViewById(R.id.password)
         passwordControl = findViewById(R.id.passwordControl)
@@ -50,11 +51,10 @@ class RegisterActivity : AppCompatActivity() {
                 emailToString = email.text.toString()
                 passwordToString = password.text.toString()
                 passwordControlToString = passwordControl.text.toString()
-
                 if (passwordToString == passwordControlToString) {
                     auth.createUserWithEmailAndPassword(emailToString, passwordToString)
 
-                        .addOnCompleteListener(this){
+                        .addOnCompleteListener{
                             val user = auth.currentUser
                             val userData = hashMapOf(
                                 "email" to email.text.toString(),

@@ -12,6 +12,7 @@
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="224dp"
         android:hint="Email"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
