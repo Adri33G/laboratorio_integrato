@@ -1,8 +1,10 @@
 package com.example.laboratorio_integrato
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -55,16 +57,13 @@ class RegisterActivity : AppCompatActivity() {
                     auth.createUserWithEmailAndPassword(emailToString, passwordToString)
 
                         .addOnCompleteListener{
-                            val user = auth.currentUser
-                            val userData = hashMapOf(
-                                "email" to email.text.toString(),
-                                "password" to password.text.toString()
-                            )
-
-                            if(user != null){
-
-                            }
+                            val intent= Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                            Toast.makeText( this,"Correct creation", Toast.LENGTH_SHORT).show()
                         }
+                } else {
+                    Toast.makeText(this, "Password wrong", Toast.LENGTH_SHORT).show()
                 }
             }
         }
