@@ -17,7 +17,6 @@ import com.google.firebase.ktx.Firebase
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import com.example.laboratorio_integrato.databinding.ActivityLoginBinding
-import com.example.laboratorio_integrato.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -29,34 +28,27 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginActivity : AppCompatActivity (){
 
-    private lateinit var binding: ActivityLoginBinding
     private lateinit var loginButton: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var email:EditText
     private lateinit var pwd:EditText
     private lateinit var showButton: Button
     private lateinit var googleLogin: Button
-    private lateinit var googleSingInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
-
-    private companion object{
-        private const val RC_SIGN_IN = 100
-        private const val TAG  = "GOOGLE_SIGN_IN_TAG"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         setContentView(R.layout.activity_login)
-
+        BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(getString(R.string.default_web_client_id))
+                    .setFilterByAuthorizedAccounts(true)
+                    .build()
+            )
         //actionbar
         val actionbar = supportActionBar
-        val googleSingInOptions =  GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-            googleSingInClient = GoogleSignIn.getClient(this, googleSingInOptions)
         //set actionbar title
         actionbar!!.title = "Back"
         //set back button
@@ -95,48 +87,11 @@ class LoginActivity : AppCompatActivity (){
                 }
 
             }
-
-
-                binding.googleLogin.setOnClickListener{
-                val intent = googleSingInClient.signInIntent
-
-                startActivityForResult(intent, RC_SIGN_IN)
-            }
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(requestCode == RC_SIGN_IN){
-            val accountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
-
-            try {
-                val account = accountTask.getResult(ApiException::class.java)
-                firebaseAuthWithGoogleAccount(account)
-            } catch (e:Exception){
-                Log.d(TAG, "On activity result : ${e.message}")
-            }
-        }
-    }
-    private fun firebaseAuthWithGoogleAccount(account: GoogleSignInAccount?){
-        val credential = GoogleAuthProvider.getCredential(account!!.idToken, null)
-        firebaseAuth.signInWithCredential(credential)
-            .addOnSuccessListener { authResult ->
-                val firebaseUser = firebaseAuth.currentUser
-
-                val uid = firebaseUser!!.uid
-                val email = firebaseUser.email
-
-            }
-
-            .addOnFailureListener{ e ->
-                Toast.makeText(this@LoginActivity, "Login failed due to ${e.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 }
