@@ -125,51 +125,51 @@ class LoginActivity : AppCompatActivity (){
         }
     }
 
-    private fun singInGoogle(){
-        val signInIntent = googleSignInClient.signInIntent
-        launcher.launch(signInIntent)
-    }
+//    private fun singInGoogle(){
+//        val signInIntent = googleSignInClient.signInIntent
+//        launcher.launch(signInIntent)
+//    }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        result ->
+//    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+//        result ->
+//
+//        if(result.resultCode == Activity.RESULT_OK){
+//
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+//            handleResults(task)
+//        }
+//
+//    }
 
-        if(result.resultCode == Activity.RESULT_OK){
+//    private fun handleResults(task: Task<GoogleSignInAccount>){
+//
+//        if(task.isSuccessful){
+//            val account : GoogleSignInAccount? =task.result
+//
+//            if(account != null){
+//                updateUI(account)
+//            }
+//        }else {
+//            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
+//        }
+//    }
+//
+//    private fun updateUI(account: GoogleSignInAccount){
+//        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+//        auth.signInWithCredential(credential).addOnCompleteListener {
+//            if(it.isSuccessful){
+//                val intent : Intent = Intent(this, MainActivity::class.java )
+//                startActivity(intent)
+//            } else {
+//                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            handleResults(task)
-        }
-
-    }
-
-    private fun handleResults(task: Task<GoogleSignInAccount>){
-
-        if(task.isSuccessful){
-            val account : GoogleSignInAccount? =task.result
-
-            if(account != null){
-                updateUI(account)
-            }
-        }else {
-            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun updateUI(account: GoogleSignInAccount){
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener {
-            if(it.isSuccessful){
-                val intent : Intent = Intent(this, MainActivity::class.java )
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
+//    override fun onSupportNavigateUp(): Boolean {
+//        onBackPressed()
+//        return true
+//    }
 
     private fun googleAuthForFirebase(account: GoogleSignInAccount){
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
