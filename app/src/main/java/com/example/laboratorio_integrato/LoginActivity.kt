@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity (){
         actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setDisplayHomeAsUpEnabled(true)
 
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
         email = findViewById(R.id.email);
         pwd = findViewById(R.id.password);
         showButton = findViewById(R.id.showButton)
@@ -177,13 +177,13 @@ class LoginActivity : AppCompatActivity (){
             try {
                 auth.signInWithCredential(credential).await()
                 withContext(Dispatchers.Main){
-                    Toast.makeText(this@LoginActivity, "Successo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Successo", Toast.LENGTH_LONG).show()
 
                 }
 
             }catch (e: Exception){
                 withContext(Dispatchers.Main){
-                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
 
                 }
             }
@@ -196,7 +196,7 @@ class LoginActivity : AppCompatActivity (){
         val intent : Intent = Intent(this, MainActivity::class.java )
         startActivity(intent)
 
-        if(resultCode == REQUEST_CODE_SING_IN){
+        if(requestCode == REQUEST_CODE_SING_IN){
             val account = GoogleSignIn.getSignedInAccountFromIntent(intent).result
             account?.let {
                 googleAuthForFirebase(it)
