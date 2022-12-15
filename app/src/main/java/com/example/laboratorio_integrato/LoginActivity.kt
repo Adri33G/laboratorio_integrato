@@ -5,6 +5,7 @@ import android.accounts.Account
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentProviderClient
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,13 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+
+const val REQUEST_CODE_SING_IN = 0
 
 class LoginActivity : AppCompatActivity (){
 
@@ -50,7 +58,8 @@ class LoginActivity : AppCompatActivity (){
                     .setFilterByAuthorizedAccounts(true)
                     .build()
             )
-        //actionbar
+
+//        actionbar
         val actionbar = supportActionBar
         //set actionbar title
         actionbar!!.title = "Back"
@@ -74,8 +83,20 @@ class LoginActivity : AppCompatActivity (){
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         googleLogin.setOnClickListener(){
-            singInGoogle()
+//            singInGoogle()
+
+            val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+                .requestIdToken(getString(R.string.webclient_id))
+                .requestEmail()
+                .build()
+
+            val signInClient = GoogleSignIn.getClient(this,options)
+            signInClient.signInIntent.also {
+                startActivityForResult(it, REQUEST_CODE_SING_IN)
+            }
+
         }
+
 
         loginButton.setOnClickListener{
             Log.d("email", email.text.toString())
@@ -148,5 +169,38 @@ class LoginActivity : AppCompatActivity (){
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    private fun googleAuthForFirebase(account: GoogleSignInAccount){
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                auth.signInWithCredential(credential).await()
+                withContext(Dispatchers.Main){
+                    Toast.makeText(this@LoginActivity, "Successo", Toast.LENGTH_SHORT).show()
+
+                }
+
+            }catch (e: Exception){
+                withContext(Dispatchers.Main){
+                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val intent : Intent = Intent(this, MainActivity::class.java )
+        startActivity(intent)
+
+        if(resultCode == REQUEST_CODE_SING_IN){
+            val account = GoogleSignIn.getSignedInAccountFromIntent(intent).result
+            account?.let {
+                googleAuthForFirebase(it)
+            }
+        }
     }
 }

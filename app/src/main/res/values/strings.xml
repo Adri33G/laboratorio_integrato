@@ -9,4 +9,5 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="webclient_id">1090040053693-ckb051l98rv51mrhphm7u9r3eruanmpa.apps.googleusercontent.com</string>
 </resources>
