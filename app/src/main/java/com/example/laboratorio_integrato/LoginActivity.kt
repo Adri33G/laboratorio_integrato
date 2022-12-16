@@ -50,14 +50,6 @@ class LoginActivity : AppCompatActivity (){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setServerClientId(getString(R.string.default_web_client_id))
-                    .setFilterByAuthorizedAccounts(true)
-                    .build()
-            )
 
 //        actionbar
         val actionbar = supportActionBar
@@ -83,18 +75,7 @@ class LoginActivity : AppCompatActivity (){
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         googleLogin.setOnClickListener(){
-//            singInGoogle()
-
-            val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
-                .requestIdToken(getString(R.string.webclient_id))
-                .requestEmail()
-                .build()
-
-            val signInClient = GoogleSignIn.getClient(this,options)
-            signInClient.signInIntent.also {
-                startActivityForResult(it, REQUEST_CODE_SING_IN)
-            }
-
+            googleLogin()
         }
 
 
@@ -170,37 +151,41 @@ class LoginActivity : AppCompatActivity (){
 //        onBackPressed()
 //        return true
 //    }
+private fun googleLogin(){
 
-    private fun googleAuthForFirebase(account: GoogleSignInAccount){
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                auth.signInWithCredential(credential).await()
-                withContext(Dispatchers.Main){
-                    Toast.makeText(this@LoginActivity, "Successo", Toast.LENGTH_LONG).show()
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(getString(R.string.default_web_client_id))
+        .requestEmail()
+        .build()
 
-                }
+    val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-            }catch (e: Exception){
-                withContext(Dispatchers.Main){
-                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
+    val signInIntent = mGoogleSignInClient.signInIntent
+    resultLauncher.launch(signInIntent)
+    mGoogleSignInClient.signOut()
+}
 
-                }
-            }
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+        val data: Intent? = result.data
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
 
-        val intent : Intent = Intent(this, MainActivity::class.java )
-        startActivity(intent)
+            val idToken = account.idToken
+            val email = account.email
 
-        if(requestCode == REQUEST_CODE_SING_IN){
-            val account = GoogleSignIn.getSignedInAccountFromIntent(intent).result
-            account?.let {
-                googleAuthForFirebase(it)
-            }
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+
+        } catch (e: ApiException) {
+            Log.e("AuthError", "signInResult:failed code=" + e.statusCode)
         }
     }
 }
