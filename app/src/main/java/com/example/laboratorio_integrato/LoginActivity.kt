@@ -46,6 +46,7 @@ class LoginActivity : AppCompatActivity (){
     private lateinit var showButton: Button
     private lateinit var googleLogin: Button
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var loginFacebookButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +67,7 @@ class LoginActivity : AppCompatActivity (){
         loginButton = findViewById(R.id.buttonLogin);
         googleLogin = findViewById(R.id.googleLogin)
         firebaseAuth = FirebaseAuth.getInstance()
+        loginFacebookButton = findViewById(R.id.login_button_facebook)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -76,6 +78,10 @@ class LoginActivity : AppCompatActivity (){
 
         googleLogin.setOnClickListener(){
             googleLogin()
+        }
+
+        loginFacebookButton.setOnClickListener(){
+            
         }
 
 
