@@ -147,10 +147,10 @@ class LoginActivity : AppCompatActivity (){
 //        }
 //    }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        onBackPressed()
-//        return true
-//    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 private fun googleLogin(){
 
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -183,6 +183,7 @@ private fun googleLogin(){
 
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
 
         } catch (e: ApiException) {
             Log.e("AuthError", "signInResult:failed code=" + e.statusCode)
