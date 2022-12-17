@@ -9,14 +9,15 @@ class LoginOrRegister : AppCompatActivity() {
 
     lateinit var register: Button
     lateinit var login: Button
+    lateinit var guest: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_or_register)
-
         register = findViewById(R.id.registerButton)
         login = findViewById(R.id.loginButton)
+        guest = findViewById(R.id.guest)
 
         register.setOnClickListener(){
             val intent = Intent(this, RegisterActivity::class.java)
@@ -28,9 +29,12 @@ class LoginOrRegister : AppCompatActivity() {
         login.setOnClickListener(){
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent);
-
         }
 
+        guest.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }
