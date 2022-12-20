@@ -93,6 +93,7 @@ class LoginActivity : AppCompatActivity (){
                     Toast.makeText(this, "Accesso", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent);
+
                     finish();
                 }
                 .addOnFailureListener {
@@ -112,46 +113,6 @@ class LoginActivity : AppCompatActivity (){
         }
     }
 
-//    private fun singInGoogle(){
-//        val signInIntent = googleSignInClient.signInIntent
-//        launcher.launch(signInIntent)
-//    }
-
-//    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-//        result ->
-//
-//        if(result.resultCode == Activity.RESULT_OK){
-//
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-//            handleResults(task)
-//        }
-//
-//    }
-
-//    private fun handleResults(task: Task<GoogleSignInAccount>){
-//
-//        if(task.isSuccessful){
-//            val account : GoogleSignInAccount? =task.result
-//
-//            if(account != null){
-//                updateUI(account)
-//            }
-//        }else {
-//            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
-//        }
-//    }
-//
-//    private fun updateUI(account: GoogleSignInAccount){
-//        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-//        auth.signInWithCredential(credential).addOnCompleteListener {
-//            if(it.isSuccessful){
-//                val intent : Intent = Intent(this, MainActivity::class.java )
-//                startActivity(intent)
-//            } else {
-//                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -168,7 +129,7 @@ private fun googleLogin(){
 
     val signInIntent = mGoogleSignInClient.signInIntent
     resultLauncher.launch(signInIntent)
-    mGoogleSignInClient.signOut()
+   // mGoogleSignInClient.signOut()
 }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -186,6 +147,7 @@ private fun googleLogin(){
 
             val idToken = account.idToken
             val email = account.email
+
 
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
