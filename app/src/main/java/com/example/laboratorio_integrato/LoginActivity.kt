@@ -168,7 +168,7 @@ private fun googleLogin(){
 
     val signInIntent = mGoogleSignInClient.signInIntent
     resultLauncher.launch(signInIntent)
-    mGoogleSignInClient.signOut()
+   // mGoogleSignInClient.signOut()
 }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
