@@ -19,6 +19,12 @@ import com.google.firebase.ktx.Firebase
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import androidx.activity.result.contract.ActivityResultContracts
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -26,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
@@ -47,7 +54,8 @@ class LoginActivity : AppCompatActivity (){
     private lateinit var showButton: Button
     private lateinit var googleLogin: Button
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var loginFacebookButton: Button
+    private lateinit var loginFacebookButton: LoginButton
+    private lateinit var callbackManager: CallbackManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,9 +89,20 @@ class LoginActivity : AppCompatActivity (){
             googleLogin()
         }
 
-        loginFacebookButton.setOnClickListener(){
-            
-        }
+        callbackManager = CallbackManager.Factory.create()
+        loginFacebookButton.setReadPermissions("email","public_profile")
+        loginFacebookButton.registerCallback(callbackManager, object: FacebookCallback<LoginResult>{
+            override fun onSuccess(loginResult: LoginResult) {
+                handleFacebookAccessToken(loginResult.accessToken)
+            }
+            override fun onCancel() {
+                Log.d("FacciaLibro", "facebook:onCancel")
+            }
+
+            override fun onError(error: FacebookException) {
+                Log.d("FacciaLibro", "facebook:onError", error)
+            }
+        })
 
 
         loginButton.setOnClickListener{
@@ -114,12 +133,31 @@ class LoginActivity : AppCompatActivity (){
         }
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
-private fun googleLogin(){
+    private fun handleFacebookAccessToken(token: AccessToken){
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential).addOnCompleteListener {
+                if(it.isSuccessful){
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }else{
+                    Log.d("Fallito", "Login Fallito")
+                }
+            }
+    }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent);
+//        callbackManager.onActivityResult(requestCode,resultCode,intent)
+//    }
+
+    private fun googleLogin(){
 
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(getString(R.string.default_web_client_id))
@@ -136,6 +174,7 @@ private fun googleLogin(){
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
         val data: Intent? = result.data
+        Log.d("funz",result.resultCode.toString())
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
@@ -145,7 +184,14 @@ private fun googleLogin(){
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
-
+            val credential = GoogleAuthProvider.getCredential(account.idToken,null)
+            auth.signInWithCredential(credential).addOnCompleteListener {
+                if(it.isSuccessful){
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
             val idToken = account.idToken
             val email = account.email
 
