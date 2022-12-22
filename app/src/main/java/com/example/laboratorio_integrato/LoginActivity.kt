@@ -167,7 +167,7 @@ class LoginActivity : AppCompatActivity (){
 
     val signInIntent = mGoogleSignInClient.signInIntent
     resultLauncher.launch(signInIntent)
-   // mGoogleSignInClient.signOut()
+    mGoogleSignInClient.signOut()
 }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -193,11 +193,6 @@ class LoginActivity : AppCompatActivity (){
             }
             val idToken = account.idToken
             val email = account.email
-
-
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
 
         } catch (e: ApiException) {
             Log.e("AuthError", "signInResult:failed code=" + e.statusCode)
