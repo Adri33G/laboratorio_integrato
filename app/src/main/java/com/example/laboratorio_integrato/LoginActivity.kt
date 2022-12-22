@@ -112,9 +112,8 @@ class LoginActivity : AppCompatActivity (){
                 .addOnSuccessListener {
                     Toast.makeText(this, "Accesso", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent);
-
-                    finish();
+                    startActivity(intent)
+                    finish()
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "Email o Password errate", Toast.LENGTH_SHORT).show()
