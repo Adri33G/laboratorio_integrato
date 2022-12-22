@@ -40,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import kotlin.math.log
 
 const val REQUEST_CODE_SING_IN = 0
 
@@ -194,6 +195,9 @@ class LoginActivity : AppCompatActivity (){
             val email = account.email
 
 
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
 
         } catch (e: ApiException) {
             Log.e("AuthError", "signInResult:failed code=" + e.statusCode)
