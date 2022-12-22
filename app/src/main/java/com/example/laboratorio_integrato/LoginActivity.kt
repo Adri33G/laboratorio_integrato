@@ -178,7 +178,6 @@ class LoginActivity : AppCompatActivity (){
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         } else {
-            Log.d("resultcode", "$result --- ${result.resultCode} --- ${result.data}")
             Toast.makeText(this@LoginActivity, result.resultCode.toString(), Toast.LENGTH_SHORT).show()
         }
     }
