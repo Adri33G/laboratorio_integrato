@@ -163,11 +163,11 @@ class LoginActivity : AppCompatActivity (){
         .requestEmail()
         .build()
 
-    val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    val mGoogleSignInClient = GoogleSignIn.getClient(this@LoginActivity, gso)
 
     val signInIntent = mGoogleSignInClient.signInIntent
     resultLauncher.launch(signInIntent)
-    mGoogleSignInClient.signOut()
+    //mGoogleSignInClient.signOut()
 }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -177,6 +177,9 @@ class LoginActivity : AppCompatActivity (){
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
+        } else {
+            Log.d("resultcode", "$result --- ${result.resultCode} --- ${result.data}")
+            Toast.makeText(this@LoginActivity, result.resultCode.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 

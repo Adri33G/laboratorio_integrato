@@ -15,6 +15,9 @@ private lateinit var auth: FirebaseAuth
 private lateinit var emailToString: String
 private lateinit var passwordToString: String
 private lateinit var passwordControlToString: String
+private lateinit var name: String
+private lateinit var surname: String
+private lateinit var hometown: String
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -22,6 +25,9 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var password: EditText
     lateinit var passwordControl: EditText
     lateinit var button: Button
+    lateinit var name: EditText
+    lateinit var surname: EditText
+    lateinit var hometown: EditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +38,9 @@ class RegisterActivity : AppCompatActivity() {
         password = findViewById(R.id.password)
         passwordControl = findViewById(R.id.passwordControl)
         button = findViewById(R.id.button)
+        name = findViewById(R.id.name)
+        surname = findViewById(R.id.surname)
+        hometown = findViewById(R.id.hometown)
         emailToString = ""
         passwordToString =""
         passwordControlToString = ""
@@ -48,7 +57,11 @@ class RegisterActivity : AppCompatActivity() {
         button.setOnClickListener(){
             if(email.text.isNotEmpty()
                 || passwordControl.text.isNotEmpty()
-                || password.text.isNotEmpty()){
+                || password.text.isNotEmpty()
+                || name.text.isNotEmpty()
+                || surname.text.isNotEmpty()
+                || hometown.text.isNotEmpty()
+            ){
 
                 emailToString = email.text.toString()
                 passwordToString = password.text.toString()
@@ -62,9 +75,9 @@ class RegisterActivity : AppCompatActivity() {
                             finish()
                             Toast.makeText( this,"Correct creation", Toast.LENGTH_SHORT).show()
                         }
-                } else {
-                    Toast.makeText(this, "Password wrong", Toast.LENGTH_SHORT).show()
                 }
+            }else {
+                Toast.makeText(this, "Password wrong", Toast.LENGTH_SHORT).show()
             }
         }
     }
