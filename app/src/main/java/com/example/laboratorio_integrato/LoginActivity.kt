@@ -144,7 +144,7 @@ class LoginActivity : AppCompatActivity (){
                     startActivity(intent)
                     finish()
                 }else{
-                    Log.d("Fallito", "Login Fallito")
+                    Log.d("Fallito", it.exception.toString())
                 }
             }
     }
