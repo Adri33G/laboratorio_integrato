@@ -26,6 +26,7 @@
                     android:id="@+id/question"
                     android:layout_width="match_parent"
                     android:backgroundTint="@color/white"
+                    android:digits="abcdefghijklmnropqrstuvwxyzABCDEFGHIJKLMNROPQRSTUVWXYZ1234567890.?! "
                     android:layout_height="wrap_content"
                     android:hint="Question" />
 
@@ -44,6 +45,7 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="abcdefghijklmnropqrstuvwxyzABCDEFGHIJKLMNROPQRSTUVWXYZ-"
                     android:backgroundTint="@color/white"
                     android:hint="Name"
                    />
@@ -63,6 +65,7 @@
                     android:id="@+id/surname"
                     android:layout_width="match_parent"
                     android:backgroundTint="@color/white"
+                    android:digits="abcdefghijklmnropqrstuvwxyzABCDEFGHIJKLMNROPQRSTUVWXYZ-"
                     android:layout_height="wrap_content"
                     android:hint="Surname" />
 
@@ -81,6 +84,7 @@
                     android:id="@+id/hometown"
                     android:layout_width="match_parent"
                     android:backgroundTint="@color/white"
+                    android:digits="abcdefghijklmnropqrstuvwxyzABCDEFGHIJKLMNROPQRSTUVWXYZ-"
                     android:layout_height="wrap_content"
                     android:hint="Hometown"
                     />

@@ -2,7 +2,6 @@ package com.example.laboratorio_integrato
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
@@ -61,7 +60,7 @@ class RegisterActivity : AppCompatActivity() {
         actionbar.setDisplayHomeAsUpEnabled(true)
 
         button.setOnClickListener(){
-            if(email.text.isNotEmpty()  //&& Patterns.EMAIL_ADDRESS.matcher(  emailToString).matches()
+            if(email.text.isNotEmpty()
                 || passwordControl.text.isNotEmpty()
                 || password.text.isNotEmpty()
                 || name.text.isNotEmpty()
@@ -78,7 +77,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
 
-                if (passwordToString == passwordControlToString) {
+                if (passwordToString == passwordControlToString && isEmailValid(emailToString)) {
 
                     auth.createUserWithEmailAndPassword(emailToString, passwordToString)
                         .addOnCompleteListener (this){
@@ -111,7 +110,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 }
             }else {
-                Toast.makeText(this, "Password wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Password or email wrong", Toast.LENGTH_SHORT).show()
             }
 
         } else {
@@ -121,6 +120,9 @@ class RegisterActivity : AppCompatActivity() {
 
 
 }
+    fun isEmailValid(email: CharSequence?): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
