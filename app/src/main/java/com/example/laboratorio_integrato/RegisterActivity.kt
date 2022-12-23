@@ -13,15 +13,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
-
-private lateinit var auth: FirebaseAuth
-private lateinit var emailToString: String
-private lateinit var passwordToString: String
-private lateinit var passwordControlToString: String
-private lateinit var nameToString: String
-private lateinit var surnameToString: String
-private lateinit var hometownToString: String
-
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var email: EditText
@@ -31,6 +22,14 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var name: EditText
     lateinit var surname: EditText
     lateinit var hometown: EditText
+    private lateinit var auth: FirebaseAuth
+    private lateinit var emailToString: String
+    private lateinit var passwordToString: String
+    private lateinit var passwordControlToString: String
+    private lateinit var nameToString: String
+    private lateinit var surnameToString: String
+    private lateinit var hometownToString: String
+    private lateinit var db: FirebaseFirestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +49,7 @@ class RegisterActivity : AppCompatActivity() {
         surnameToString = ""
         passwordToString =""
         passwordControlToString = ""
-        val db = FirebaseFirestore.getInstance()
+        db = FirebaseFirestore.getInstance()
 
 
         val actionbar = supportActionBar
@@ -100,14 +99,14 @@ class RegisterActivity : AppCompatActivity() {
                                         finish()
                                     }
                                     .addOnFailureListener {
-                                        Toast.makeText(this, "Failed Creating", Toast.LENGTH_SHORT)
+                                        Toast.makeText(this, it.message, Toast.LENGTH_SHORT)
                                             .show()
                                     }
                             }
 
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            Toast.makeText( this,"Correct creation", Toast.LENGTH_SHORT).show()
+//                            val intent = Intent(this, MainActivity::class.java)
+//                            startActivity(intent)
+//                            Toast.makeText( this,"Correct creation", Toast.LENGTH_SHORT).show()
 
                 }
             }else {
