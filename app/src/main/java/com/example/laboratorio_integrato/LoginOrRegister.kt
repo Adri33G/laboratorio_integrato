@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class LoginOrRegister : AppCompatActivity() {
@@ -42,7 +43,9 @@ class LoginOrRegister : AppCompatActivity() {
             editor.putBoolean("ospite",ospite)
             if(ospiteStatus(ospite)){
                 guest.isEnabled = false
+                Toast.makeText(this,"If you want more consult, SUBSCRIBE!", Toast.LENGTH_LONG).show()
             }
+
         }
     }
 

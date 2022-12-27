@@ -18,6 +18,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Patterns
 import androidx.activity.result.contract.ActivityResultContracts
 import com.facebook.*
 import com.facebook.login.LoginResult
@@ -107,34 +108,41 @@ class LoginActivity : AppCompatActivity (){
 
         loginButton.setOnClickListener{
             if(email.text.isNotEmpty()
-                || pwd.text.isNotEmpty()){
+                || pwd.text.isNotEmpty()) {
 
-                Toast.makeText(this,"Entra nel if", Toast.LENGTH_SHORT)
-            Log.d("email", email.text.toString())
-            Log.d("password", pwd.text.toString())
-            auth.signInWithEmailAndPassword(email.text.toString(), pwd.text.toString())
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Accesso", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Email o Password errate", Toast.LENGTH_SHORT).show()
-                }
+                if (isEmailValid(email.toString())) {
 
-            showButton.setOnClickListener {
-                if(showButton.text.toString() == "Show"){
-                    pwd.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                    showButton.text = "Hide"
-                } else{
-                    pwd.transformationMethod = PasswordTransformationMethod.getInstance()
-                    showButton.text = "Show"
-                }
+                    Toast.makeText(this, "Entra nel if", Toast.LENGTH_SHORT)
+                    Log.d("email", email.text.toString())
+                    Log.d("password", pwd.text.toString())
+                    auth.signInWithEmailAndPassword(email.text.toString(), pwd.text.toString())
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Accesso", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Email o Password errate", Toast.LENGTH_SHORT)
+                                .show()
+                        }
 
+
+                } else {
+                    Toast.makeText(this, "Email or password error", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Empty parameters", Toast.LENGTH_SHORT).show()
             }
-        } else {
-                Toast.makeText(this,"Empty parameterssss", Toast.LENGTH_SHORT)
+        }
+
+        showButton.setOnClickListener {
+            if (showButton.text.toString() == "Show") {
+                pwd.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                showButton.text = "Hide"
+            } else {
+                pwd.transformationMethod = PasswordTransformationMethod.getInstance()
+                showButton.text = "Show"
             }
 
         }
@@ -225,5 +233,9 @@ class LoginActivity : AppCompatActivity (){
         } catch (e: ApiException) {
             Log.e("AuthError", "signInResult:failed code=" + e.statusCode)
         }
+    }
+
+    fun isEmailValid(email: CharSequence?): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
