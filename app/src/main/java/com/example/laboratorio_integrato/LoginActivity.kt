@@ -106,6 +106,10 @@ class LoginActivity : AppCompatActivity (){
 
 
         loginButton.setOnClickListener{
+            if(email.text.isNotEmpty()
+                || pwd.text.isNotEmpty()){
+
+                Toast.makeText(this,"Entra nel if", Toast.LENGTH_SHORT)
             Log.d("email", email.text.toString())
             Log.d("password", pwd.text.toString())
             auth.signInWithEmailAndPassword(email.text.toString(), pwd.text.toString())
@@ -129,7 +133,12 @@ class LoginActivity : AppCompatActivity (){
                 }
 
             }
+        } else {
+                Toast.makeText(this,"Empty parameterssss", Toast.LENGTH_SHORT)
+            }
+
         }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

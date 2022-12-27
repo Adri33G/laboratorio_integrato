@@ -35,8 +35,8 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         auth = Firebase.auth
-        email = findViewById(R.id.email)
-        password = findViewById(R.id.password)
+        email = findViewById(R.id.emailRegister)
+        password = findViewById(R.id.passwordRegister)
         passwordControl = findViewById(R.id.passwordControl)
         button = findViewById(R.id.button)
         name = findViewById(R.id.name)
