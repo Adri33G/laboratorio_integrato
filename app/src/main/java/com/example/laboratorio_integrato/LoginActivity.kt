@@ -19,10 +19,7 @@ import com.google.firebase.ktx.Firebase
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import androidx.activity.result.contract.ActivityResultContracts
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -35,6 +32,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,6 +54,7 @@ class LoginActivity : AppCompatActivity (){
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var loginFacebookButton: LoginButton
     private lateinit var callbackManager: CallbackManager
+    private lateinit var db:FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +76,7 @@ class LoginActivity : AppCompatActivity (){
         googleLogin = findViewById(R.id.googleLogin)
         firebaseAuth = FirebaseAuth.getInstance()
         loginFacebookButton = findViewById(R.id.login_button_facebook)
+        db = FirebaseFirestore.getInstance()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -90,7 +90,7 @@ class LoginActivity : AppCompatActivity (){
         }
 
         callbackManager = CallbackManager.Factory.create()
-        loginFacebookButton.setReadPermissions("email","public_profile")
+        loginFacebookButton.setPermissions("email","public_profile")
         loginFacebookButton.registerCallback(callbackManager, object: FacebookCallback<LoginResult>{
             override fun onSuccess(loginResult: LoginResult) {
                 handleFacebookAccessToken(loginResult.accessToken)
@@ -167,7 +167,7 @@ class LoginActivity : AppCompatActivity (){
 
     val signInIntent = mGoogleSignInClient.signInIntent
     resultLauncher.launch(signInIntent)
-    //mGoogleSignInClient.signOut()
+    mGoogleSignInClient.signOut()
 }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -188,9 +188,26 @@ class LoginActivity : AppCompatActivity (){
             val credential = GoogleAuthProvider.getCredential(account.idToken,null)
             auth.signInWithCredential(credential).addOnCompleteListener {
                 if(it.isSuccessful){
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    val currentUser = auth.currentUser
+                    val userHashMap = hashMapOf(
+                        "name" to account.givenName,
+                        "surname" to account.familyName,
+                    )
+                    if (currentUser != null) {
+                        Toast.makeText(this,"ho creato qualcoas", Toast.LENGTH_SHORT)
+                        db.collection("users").document(currentUser.uid).set(userHashMap)
+                            .addOnCompleteListener {
+
+                                Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, it.message, Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                    }
                 }
             }
             val idToken = account.idToken
