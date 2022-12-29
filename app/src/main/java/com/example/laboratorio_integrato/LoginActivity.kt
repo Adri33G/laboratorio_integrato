@@ -110,7 +110,7 @@ class LoginActivity : AppCompatActivity (){
             if(email.text.isNotEmpty()
                 || pwd.text.isNotEmpty()) {
 
-                if (isEmailValid(email.toString())) {
+                if (isEmailValid(email.text.toString())) {
 
                     Toast.makeText(this, "Entra nel if", Toast.LENGTH_SHORT)
                     Log.d("email", email.text.toString())

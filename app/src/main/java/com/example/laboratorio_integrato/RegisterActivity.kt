@@ -101,7 +101,11 @@ class RegisterActivity : AppCompatActivity() {
                                         Toast.makeText(this, it.message, Toast.LENGTH_SHORT)
                                             .show()
                                     }
+                                    .addOnFailureListener{
+                                        Toast.makeText(this,"dio cane", Toast.LENGTH_LONG)
+                                    }
                             }
+
 
 //                            val intent = Intent(this, MainActivity::class.java)
 //                            startActivity(intent)
