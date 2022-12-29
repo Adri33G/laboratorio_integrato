@@ -1,11 +1,16 @@
 package com.example.laboratorio_integrato.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import com.example.laboratorio_integrato.LoginOrRegister
+import com.example.laboratorio_integrato.MainActivity
 import com.example.laboratorio_integrato.R
+import com.google.firebase.auth.FirebaseAuth
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +41,20 @@ class ProfileFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
+    private lateinit var auth:FirebaseAuth
+    private lateinit var logOut:Button
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        auth= FirebaseAuth.getInstance()
+        logOut = view.findViewById(R.id.LogOut)
+        logOut.setOnClickListener {
+            auth.signOut()
+
+            val intent = Intent(activity, LoginOrRegister::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
     }
 
     companion object {

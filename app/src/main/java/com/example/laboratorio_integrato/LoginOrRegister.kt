@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginOrRegister : AppCompatActivity() {
 
     lateinit var register: Button
     lateinit var login: Button
     lateinit var guest: Button
+    lateinit var auth:FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPref = getSharedPreferences("SharedPref", Context.MODE_PRIVATE)
@@ -22,6 +24,7 @@ class LoginOrRegister : AppCompatActivity() {
         register = findViewById(R.id.registerButton)
         login = findViewById(R.id.loginButton)
         guest = findViewById(R.id.guest)
+        auth = FirebaseAuth.getInstance()
        // guest.isEnabled = true
 
         register.setOnClickListener(){
@@ -53,4 +56,15 @@ class LoginOrRegister : AppCompatActivity() {
         val sharedPref = getSharedPreferences("SharedPref", Context.MODE_PRIVATE)
         return sharedPref.getBoolean("ospite", ospite)
     }
+    override fun onStart() {
+        super.onStart()
+        val currentUser=auth.currentUser
+        if(currentUser != null)
+        {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
 }
+

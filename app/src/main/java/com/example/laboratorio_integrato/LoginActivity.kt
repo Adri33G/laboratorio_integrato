@@ -1,11 +1,7 @@
 package com.example.laboratorio_integrato
 
 
-import android.accounts.Account
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentProviderClient
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,8 +10,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns
@@ -23,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.facebook.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -31,15 +24,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
-import kotlin.math.log
+import java.util.*
 
 const val REQUEST_CODE_SING_IN = 0
 
@@ -91,7 +78,7 @@ class LoginActivity : AppCompatActivity (){
         }
 
         callbackManager = CallbackManager.Factory.create()
-        loginFacebookButton.setPermissions("email","public_profile")
+        loginFacebookButton.setPermissions(Arrays.asList("email","public_profile"))
         loginFacebookButton.registerCallback(callbackManager, object: FacebookCallback<LoginResult>{
             override fun onSuccess(loginResult: LoginResult) {
                 handleFacebookAccessToken(loginResult.accessToken)
@@ -156,14 +143,49 @@ class LoginActivity : AppCompatActivity (){
     private fun handleFacebookAccessToken(token: AccessToken){
         val credential = FacebookAuthProvider.getCredential(token.token)
         auth.signInWithCredential(credential).addOnCompleteListener {
+            var firstName =""
+            var lastName =""
                 if(it.isSuccessful){
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }else {
-                    Log.d("Fallito", it.exception.toString())
+                    val request = GraphRequest.newMeRequest(
+                        token
+                    ) { `object`, response ->
+                        try{
+                            firstName = `object`?.getString("first_name").toString()
+                            //lastName = `object`?.getString("hometown").toString()
+                            val currentUser = auth.currentUser
+                            val userHashMap = hashMapOf(
+                                "name" to firstName,
+                                "surname" to lastName,
+                            )
+                            if (currentUser != null) {
+                                Toast.makeText(this,"ho creato qualcoas", Toast.LENGTH_SHORT)
+                                db.collection("users").document(currentUser.uid).set(userHashMap)
+                                    .addOnCompleteListener {
+
+                                        Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener {
+                                        Toast.makeText(this, it.message, Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                            }else {
+                                Log.d("Fallito", it.exception.toString())
+                            }
+
+                        }catch (e: Exception){
+                            Log.d("facciaLibro", e.message.toString())
+                        }
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
+                    val parameters = Bundle()
+                    parameters.putString("fields", "first_name")
+                    request.parameters = parameters
+                    request.executeAsync()
                 }
-            }
+        }
     }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -184,7 +206,7 @@ class LoginActivity : AppCompatActivity (){
 
     val signInIntent = mGoogleSignInClient.signInIntent
     resultLauncher.launch(signInIntent)
-    mGoogleSignInClient.signOut()
+    //mGoogleSignInClient.signOut()
 }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
