@@ -107,6 +107,7 @@ class LoginActivity : AppCompatActivity (){
                             Toast.makeText(this, "Accesso", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
+                            LoginOrRegister.closeActivity.finish()
                             finish()
                         }
                         .addOnFailureListener {
@@ -177,6 +178,7 @@ class LoginActivity : AppCompatActivity (){
                         }
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
+                        LoginOrRegister.closeActivity.finish()
                         finish()
                     }
 
@@ -241,6 +243,7 @@ class LoginActivity : AppCompatActivity (){
                                 Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show()
                                 val intent = Intent(this, MainActivity::class.java)
                                 startActivity(intent)
+                                LoginOrRegister.closeActivity.finish()
                                 finish()
                             }
                             .addOnFailureListener {

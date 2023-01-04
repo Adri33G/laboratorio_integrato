@@ -1,5 +1,6 @@
 package com.example.laboratorio_integrato
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +9,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
+
 class LoginOrRegister : AppCompatActivity() {
+
+    companion object{
+        lateinit var closeActivity: Activity
+    }
 
     lateinit var register: Button
     lateinit var login: Button
@@ -18,6 +24,7 @@ class LoginOrRegister : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_or_register)
+        closeActivity = this
         val sharedPref = getSharedPreferences("SharedPref", Context.MODE_PRIVATE)
         var editor = sharedPref.edit()
         var ospite = sharedPref.getBoolean("dio",false)
@@ -55,7 +62,10 @@ class LoginOrRegister : AppCompatActivity() {
             }
 
         }
+
+
     }
+
 
     private fun ospiteStatus(ospite: Boolean): Boolean {
         val sharedPref = getSharedPreferences("SharedPref", Context.MODE_PRIVATE)

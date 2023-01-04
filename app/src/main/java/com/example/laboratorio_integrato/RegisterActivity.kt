@@ -95,6 +95,7 @@ class RegisterActivity : AppCompatActivity() {
                                         Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(this, MainActivity::class.java)
                                         startActivity(intent)
+                                        LoginOrRegister.closeActivity.finish()
                                         finish()
                                     }
                                     .addOnFailureListener {
