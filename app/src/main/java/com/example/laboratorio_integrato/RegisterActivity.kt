@@ -86,7 +86,7 @@ class RegisterActivity : AppCompatActivity() {
                                 "surname" to surname.text.toString(),
                                 "hometown" to hometown.text.toString()
                             )
-
+    
                             if (currentUser != null) {
                                 Toast.makeText(this,"ho creato qualcoas", Toast.LENGTH_SHORT)
                                 db.collection("users").document(currentUser.uid).set(userHashMap)
