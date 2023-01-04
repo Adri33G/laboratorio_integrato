@@ -16,13 +16,25 @@
         android:theme="@style/Theme.Laboratorio_integrato"
         tools:targetApi="31">
         <activity
+            android:name=".PresentationActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".SibillaLogged"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
-                android:value=""
                 android:screenOrientation="portrait"
-            />
+                android:value="" />
         </activity>
 
         <meta-data
@@ -32,28 +44,21 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-        />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginOrRegister"
             android:exported="true"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
