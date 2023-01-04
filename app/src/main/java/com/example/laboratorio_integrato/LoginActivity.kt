@@ -221,6 +221,7 @@ class LoginActivity : AppCompatActivity (){
         }
     }
 
+
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)

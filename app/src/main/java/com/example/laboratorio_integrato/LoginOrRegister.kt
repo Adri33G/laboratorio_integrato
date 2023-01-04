@@ -16,15 +16,19 @@ class LoginOrRegister : AppCompatActivity() {
     lateinit var auth:FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val sharedPref = getSharedPreferences("SharedPref", Context.MODE_PRIVATE)
-        var editor = sharedPref.edit()
-        var ospite = false
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_or_register)
+        val sharedPref = getSharedPreferences("SharedPref", Context.MODE_PRIVATE)
+        var editor = sharedPref.edit()
+        var ospite = sharedPref.getBoolean("dio",false)
         register = findViewById(R.id.registerButton)
         login = findViewById(R.id.loginButton)
         guest = findViewById(R.id.guest)
         auth = FirebaseAuth.getInstance()
+
+        if(ospite){
+            guest.isEnabled = false
+        }
        // guest.isEnabled = true
 
         register.setOnClickListener(){
@@ -40,11 +44,12 @@ class LoginOrRegister : AppCompatActivity() {
         }
 
         guest.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, SibillaLogged::class.java)
             startActivity(intent)
-            ospite = true
-            editor.putBoolean("ospite",ospite)
-            if(ospiteStatus(ospite)){
+
+            if(!ospite){
+                editor.putBoolean("dio",true)
+                editor.apply()
                 guest.isEnabled = false
                 Toast.makeText(this,"If you want more consult, SUBSCRIBE!", Toast.LENGTH_LONG).show()
             }
