@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +23,9 @@ class LoginOrRegister : AppCompatActivity() {
     lateinit var guest: Button
     lateinit var auth:FirebaseAuth
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_or_register)
         closeActivity = this

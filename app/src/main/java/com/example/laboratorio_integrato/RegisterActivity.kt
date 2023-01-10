@@ -3,6 +3,7 @@ package com.example.laboratorio_integrato
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -33,6 +34,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_register)
         auth = Firebase.auth
         email = findViewById(R.id.emailRegister)
